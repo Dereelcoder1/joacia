@@ -1,0 +1,562 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background: #f8fafc;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 clamp(10px, 4vw, 20px);
+}
+
+/* Header */
+.header {
+    background: linear-gradient(90deg, #f59e0b 0%, #2563eb 100%);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 1000;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: clamp(0.8rem, 2vw, 1rem) 0;
+}
+
+.logo img {
+    width: clamp(50px, 10vw, 70px);
+    height: clamp(35px, 8vw, 50px);
+}
+
+.nav-link {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: clamp(0.9rem, 3.5vw, 1rem);
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #e2e8f0;
+}
+
+/* Main Content */
+.main {
+    padding: clamp(1rem, 4vw, 2rem) 0;
+    min-height: calc(100vh - clamp(120px, 20vh, 140px));
+}
+
+.booking-wrapper {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: clamp(1rem, 3vw, 2rem);
+    align-items: start;
+}
+
+@media (max-width: 900px) {
+    .booking-wrapper {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
+
+/* Booking Card */
+.booking-card {
+    background: white;
+    border-radius: clamp(12px, 3vw, 20px);
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.booking-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: clamp(1rem, 3vw, 2rem);
+}
+
+@media (max-width: 600px) {
+    .booking-header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+}
+
+.booking-title {
+    font-size: clamp(1.3rem, 5vw, 2rem);
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+}
+
+.booking-subtitle {
+    color: #14b8a6;
+    font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+    font-weight: 500;
+}
+
+.service-badge {
+    background: #14b8a6;
+    color: white;
+    width: clamp(40px, 10vw, 60px);
+    height: clamp(40px, 10vw, 60px);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(1rem, 4vw, 1.5rem);
+    font-weight: 700;
+    box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3);
+}
+
+@media (max-width: 600px) {
+    .service-badge {
+        align-self: center;
+    }
+}
+
+/* Form Styles */
+.booking-form {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.8rem, 2.5vw, 1.5rem);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: clamp(0.5rem, 2vw, 1rem);
+}
+
+@media (max-width: 480px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-label {
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.5rem;
+    font-size: clamp(0.8rem, 3vw, 0.9rem);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: clamp(10px, 2.5vw, 15px);
+    border: 2px solid #e5e7eb;
+    border-radius: clamp(8px, 2vw, 12px);
+    font-size: clamp(0.9rem, 3.5vw, 1rem);
+    transition: all 0.3s ease;
+    background: #f9fafb;
+    font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #14b8a6;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #9ca3af;
+}
+
+.date-input-wrapper {
+    position: relative;
+}
+
+.calendar-icon {
+    position: absolute;
+    right: clamp(10px, 2.5vw, 15px);
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    pointer-events: none;
+    width: clamp(16px, 4vw, 20px);
+    height: clamp(16px, 4vw, 20px);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Photo Upload Styles */
+.form-group input[type="file"] {
+    padding: clamp(8px, 2vw, 10px);
+    border: 2px solid #e5e7eb;
+    border-radius: clamp(8px, 2vw, 12px);
+    background: #f9fafb;
+    cursor: pointer;
+    font-size: clamp(0.9rem, 3.5vw, 1rem);
+}
+
+.form-group input[type="file"]::-webkit-file-upload-button {
+    background: #14b8a6;
+    color: white;
+    border: none;
+    padding: clamp(8px, 2vw, 10px) clamp(15px, 4vw, 20px);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    font-size: clamp(0.8rem, 3vw, 0.9rem);
+}
+
+.form-group input[type="file"]::-webkit-file-upload-button:hover {
+    background: #0f766e;
+}
+
+.photo-preview {
+    margin-top: clamp(0.5rem, 2vw, 1rem);
+    max-width: clamp(150px, 40vw, 200px);
+    border-radius: clamp(8px, 2vw, 12px);
+    overflow: hidden;
+    border: 2px solid #e5e7eb;
+}
+
+.photo-preview img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Total Amount Styles */
+.total-amount {
+    padding: clamp(10px, 2.5vw, 15px);
+    border: 2px solid #e5e7eb;
+    border-radius: clamp(8px, 2vw, 12px);
+    font-size: clamp(1rem, 4vw, 1.2rem);
+    font-weight: 600;
+    color: #1e293b;
+    background: #f9fafb;
+    text-align: center;
+}
+
+/* Submit Button */
+.submit-button {
+    background: #14b8a6;
+    color: white;
+    border: none;
+    padding: clamp(12px, 3vw, 18px) clamp(20px, 5vw, 30px);
+    border-radius: 50px;
+    font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: clamp(0.5rem, 2vw, 1rem);
+    box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3);
+}
+
+.submit-button:hover {
+    background: #0f766e;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(20, 184, 166, 0.4);
+}
+
+.submit-button:active {
+    transform: translateY(0);
+}
+
+.button-arrow {
+    transition: transform 0.3s ease;
+    width: clamp(16px, 4vw, 20px);
+    height: clamp(16px, 4vw, 20px);
+}
+
+.submit-button:hover .button-arrow {
+    transform: translateX(3px);
+}
+
+/* Success Message */
+.success-message {
+    text-align: center;
+    padding: clamp(1.5rem, 4vw, 2rem);
+}
+
+.success-icon {
+    background: #10b981;
+    color: white;
+    width: clamp(40px, 10vw, 60px);
+    height: clamp(40px, 10vw, 60px);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto clamp(0.5rem, 2vw, 1rem);
+}
+
+.success-message h3 {
+    color: #1e293b;
+    font-size: clamp(1.2rem, 4vw, 1.5rem);
+    margin-bottom: 0.5rem;
+}
+
+.success-message p {
+    color: #64748b;
+    font-size: clamp(0.8rem, 3vw, 0.9rem);
+    margin-bottom: clamp(1rem, 3vw, 2rem);
+}
+
+.back-button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: clamp(10px, 2.5vw, 12px) clamp(16px, 4vw, 24px);
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: clamp(0.8rem, 3vw, 0.9rem);
+}
+
+.back-button:hover {
+    background: #1d4ed8;
+}
+
+/* Service Information */
+.service-info {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.8rem, 2vw, 1rem);
+    order: 1;
+}
+
+@media (max-width: 900px) {
+    .service-info {
+        order: -1;
+    }
+}
+
+.info-card {
+    background: white;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    border-radius: clamp(10px, 2.5vw, 15px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+    animation: fadeInRight 0.6s ease forwards;
+}
+
+.info-card h3 {
+    color: #1e293b;
+    font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.info-card p {
+    color: #64748b;
+    font-size: clamp(0.8rem, 3vw, 0.9rem);
+    line-height: 1.5;
+}
+
+/* Footer */
+.footer {
+    background: #1e293b;
+    color: white;
+    text-align: center;
+    padding: clamp(1.5rem, 4vw, 2rem) 0;
+    margin-top: clamp(1rem, 3vw, 2rem);
+}
+
+.footer p {
+    font-size: clamp(0.8rem, 3vw, 0.9rem);
+}
+
+/* Loading State */
+.submit-button.loading {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.submit-button.loading .button-text {
+    opacity: 0;
+}
+
+.submit-button.loading::after {
+    content: '';
+    position: absolute;
+    width: clamp(16px, 4vw, 20px);
+    height: clamp(16px, 4vw, 20px);
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Form Validation Styles */
+.form-group input.error,
+.form-group select.error,
+.form-group textarea.error {
+    border-color: #ef4444;
+    background: #fef2f2;
+}
+
+.error-message {
+    color: #ef4444;
+    font-size: clamp(0.7rem, 2.5vw, 0.8rem);
+    margin-top: 0.25rem;
+}
+
+/* Animation for form appearance */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.service-info .info-card:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.service-info .info-card:nth-child(3) {
+    animation-delay: 0.2s;
+}
+
+/* Responsive Design for Smaller Screens */
+@media (max-width: 600px) {
+    .booking-card {
+        padding: clamp(1rem, 3vw, 1.5rem);
+    }
+
+    .booking-title {
+        font-size: clamp(1.2rem, 4.5vw, 1.5rem);
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 clamp(8px, 3vw, 12px);
+    }
+
+    .logo img {
+        width: clamp(40px, 12vw, 60px);
+        height: clamp(30px, 9vw, 45px);
+    }
+
+    .nav-link {
+        font-size: clamp(0.8rem, 3.2vw, 0.9rem);
+    }
+
+    .booking-card {
+        padding: clamp(0.8rem, 2.5vw, 1.2rem);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: clamp(8px, 2vw, 12px);
+        font-size: clamp(0.8rem, 3.2vw, 0.9rem);
+    }
+
+    .form-group input[type="file"]::-webkit-file-upload-button {
+        padding: clamp(6px, 1.5vw, 8px) clamp(10px, 3vw, 15px);
+        font-size: clamp(0.7rem, 2.5vw, 0.8rem);
+    }
+
+    .total-amount {
+        font-size: clamp(0.9rem, 3.5vw, 1rem);
+    }
+
+    .submit-button {
+        padding: clamp(10px, 2.5vw, 14px) clamp(15px, 4vw, 25px);
+        font-size: clamp(0.8rem, 3.2vw, 1rem);
+    }
+
+    .success-message h3 {
+        font-size: clamp(1rem, 3.5vw, 1.3rem);
+    }
+
+    .success-message p {
+        font-size: clamp(0.7rem, 2.5vw, 0.8rem);
+    }
+
+    .back-button {
+        padding: clamp(8px, 2vw, 10px) clamp(12px, 3vw, 20px);
+        font-size: clamp(0.7rem, 2.5vw, 0.8rem);
+    }
+}
+
+@media (max-width: 360px) {
+    .booking-title {
+        font-size: clamp(1rem, 4vw, 1.3rem);
+    }
+
+    .booking-subtitle {
+        font-size: clamp(0.8rem, 3vw, 0.9rem);
+    }
+
+    .form-label {
+        font-size: clamp(0.7rem, 2.5vw, 0.8rem);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: clamp(6px, 1.8vw, 10px);
+        font-size: clamp(0.7rem, 2.8vw, 0.8rem);
+    }
+
+    .submit-button {
+        padding: clamp(8px, 2vw, 12px) clamp(12px, 3vw, 20px);
+        font-size: clamp(0.7rem, 2.8vw, 0.9rem);
+    }
+}
