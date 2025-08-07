@@ -36,9 +36,9 @@ function handleOrderSubmission(event) {
     };
 
     // Retrieve existing orders from localStorage (same key as admin dashboard)
-    let orders = JSON.parse(localStorage.getItem("laundrypro_orders") || "[]");
+    let orders = JSON.parse(localStorage.getItem("joacia_orders") || "[]");
     orders.push(orderData);
-    localStorage.setItem("laundrypro_orders", JSON.stringify(orders));
+    localStorage.setItem("joacia_orders", JSON.stringify(orders));
 
     // Update customer data (similar to admin dashboard logic)
     updateCustomerData(customerName, customerEmail, customerPhone);
@@ -59,7 +59,7 @@ function calculateOrderTotal(serviceType, quantity) {
 }
 
 function updateCustomerData(name, email, phone = "") {
-    const customers = JSON.parse(localStorage.getItem("laundrypro_customers") || "[]");
+    const customers = JSON.parse(localStorage.getItem("joacia_customers") || "[]");
     const customer = customers.find((c) => c.email === email);
 
     if (customer) {
@@ -77,7 +77,7 @@ function updateCustomerData(name, email, phone = "") {
             createdDate: new Date().toISOString(),
         });
     }
-    localStorage.setItem("laundrypro_customers", JSON.stringify(customers));
+    localStorage.setItem("joacia_customers", JSON.stringify(customers));
 }
 
 function setupFileUpload(areaId, inputId, filesContainerId, multiple) {

@@ -11,12 +11,14 @@ body {
     color: #333;
     background: #f8fafc;
     min-height: 100vh;
+    overflow-x: hidden;
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 100%;
+    width: min(1200px, 95vw);
     margin: 0 auto;
-    padding: 0 clamp(10px, 4vw, 20px);
+    padding: 0 4vw;
 }
 
 /* Header */
@@ -34,19 +36,20 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: clamp(0.8rem, 2vw, 1rem) 0;
+    padding: 1.5vw 0;
 }
 
 .logo img {
-    width: clamp(50px, 10vw, 70px);
-    height: clamp(35px, 8vw, 50px);
+    width: min(10vw, 70px);
+    height: auto;
+    max-height: 50px;
 }
 
 .nav-link {
     color: #fff;
     text-decoration: none;
     font-weight: 500;
-    font-size: clamp(0.9rem, 3.5vw, 1rem);
+    font-size: min(3.5vw, 1rem);
     transition: color 0.3s ease;
 }
 
@@ -56,29 +59,29 @@ body {
 
 /* Main Content */
 .main {
-    padding: clamp(1rem, 4vw, 2rem) 0;
-    min-height: calc(100vh - clamp(120px, 20vh, 140px));
+    padding: 4vw 0;
+    min-height: calc(100vh - 20vh);
 }
 
 .booking-wrapper {
     display: grid;
     grid-template-columns: 2fr 1fr;
-    gap: clamp(1rem, 3vw, 2rem);
+    gap: 3vw;
     align-items: start;
 }
 
 @media (max-width: 900px) {
     .booking-wrapper {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
+        gap: 2vw;
     }
 }
 
 /* Booking Card */
 .booking-card {
     background: white;
-    border-radius: clamp(12px, 3vw, 20px);
-    padding: clamp(1.5rem, 4vw, 2.5rem);
+    border-radius: min(3vw, 20px);
+    padding: 4vw;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     border: 1px solid #e2e8f0;
     animation: fadeInUp 0.6s ease forwards;
@@ -88,41 +91,41 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: clamp(1rem, 3vw, 2rem);
+    margin-bottom: 3vw;
 }
 
 @media (max-width: 600px) {
     .booking-header {
         flex-direction: column;
-        gap: 1rem;
+        gap: 2vw;
         text-align: center;
     }
 }
 
 .booking-title {
-    font-size: clamp(1.3rem, 5vw, 2rem);
+    font-size: min(5vw, 2rem);
     font-weight: 600;
     color: #1e293b;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1vw;
     line-height: 1.3;
 }
 
 .booking-subtitle {
     color: #14b8a6;
-    font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+    font-size: min(3.5vw, 1.1rem);
     font-weight: 500;
 }
 
 .service-badge {
     background: #14b8a6;
     color: white;
-    width: clamp(40px, 10vw, 60px);
-    height: clamp(40px, 10vw, 60px);
+    width: min(10vw, 60px);
+    height: min(10vw, 60px);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: clamp(1rem, 4vw, 1.5rem);
+    font-size: min(4vw, 1.5rem);
     font-weight: 700;
     box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3);
 }
@@ -137,13 +140,13 @@ body {
 .booking-form {
     display: flex;
     flex-direction: column;
-    gap: clamp(0.8rem, 2.5vw, 1.5rem);
+    gap: 2.5vw;
 }
 
 .form-row {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: clamp(0.5rem, 2vw, 1rem);
+    grid-template-columns: repeat(auto-fit, minmax(min(45vw, 200px), 1fr));
+    gap: 2vw;
 }
 
 @media (max-width: 480px) {
@@ -164,20 +167,21 @@ body {
 .form-label {
     font-weight: 500;
     color: #374151;
-    margin-bottom: 0.5rem;
-    font-size: clamp(0.8rem, 3vw, 0.9rem);
+    margin-bottom: 1vw;
+    font-size: min(3vw, 0.9rem);
 }
 
 .form-group input,
 .form-group select,
 .form-group textarea {
-    padding: clamp(10px, 2.5vw, 15px);
+    padding: min(2.5vw, 15px);
     border: 2px solid #e5e7eb;
-    border-radius: clamp(8px, 2vw, 12px);
-    font-size: clamp(0.9rem, 3.5vw, 1rem);
+    border-radius: min(2vw, 12px);
+    font-size: min(3.5vw, 1rem);
     transition: all 0.3s ease;
     background: #f9fafb;
     font-family: inherit;
+    width: 100%;
 }
 
 .form-group input:focus,
@@ -200,13 +204,13 @@ body {
 
 .calendar-icon {
     position: absolute;
-    right: clamp(10px, 2.5vw, 15px);
+    right: min(2.5vw, 15px);
     top: 50%;
     transform: translateY(-50%);
     color: #9ca3af;
     pointer-events: none;
-    width: clamp(16px, 4vw, 20px);
-    height: clamp(16px, 4vw, 20px);
+    width: min(4vw, 20px);
+    height: min(4vw, 20px);
 }
 
 .form-group textarea {
@@ -216,23 +220,23 @@ body {
 
 /* Photo Upload Styles */
 .form-group input[type="file"] {
-    padding: clamp(8px, 2vw, 10px);
+    padding: min(2vw, 10px);
     border: 2px solid #e5e7eb;
-    border-radius: clamp(8px, 2vw, 12px);
+    border-radius: min(2vw, 12px);
     background: #f9fafb;
     cursor: pointer;
-    font-size: clamp(0.9rem, 3.5vw, 1rem);
+    font-size: min(3.5vw, 1rem);
 }
 
 .form-group input[type="file"]::-webkit-file-upload-button {
     background: #14b8a6;
     color: white;
     border: none;
-    padding: clamp(8px, 2vw, 10px) clamp(15px, 4vw, 20px);
+    padding: min(2vw, 10px) min(4vw, 20px);
     border-radius: 8px;
     cursor: pointer;
     transition: background 0.3s ease;
-    font-size: clamp(0.8rem, 3vw, 0.9rem);
+    font-size: min(3vw, 0.9rem);
 }
 
 .form-group input[type="file"]::-webkit-file-upload-button:hover {
@@ -240,9 +244,9 @@ body {
 }
 
 .photo-preview {
-    margin-top: clamp(0.5rem, 2vw, 1rem);
-    max-width: clamp(150px, 40vw, 200px);
-    border-radius: clamp(8px, 2vw, 12px);
+    margin-top: 2vw;
+    max-width: min(40vw, 200px);
+    border-radius: min(2vw, 12px);
     overflow: hidden;
     border: 2px solid #e5e7eb;
 }
@@ -255,10 +259,10 @@ body {
 
 /* Total Amount Styles */
 .total-amount {
-    padding: clamp(10px, 2.5vw, 15px);
+    padding: min(2.5vw, 15px);
     border: 2px solid #e5e7eb;
-    border-radius: clamp(8px, 2vw, 12px);
-    font-size: clamp(1rem, 4vw, 1.2rem);
+    border-radius: min(2vw, 12px);
+    font-size: min(4vw, 1.2rem);
     font-weight: 600;
     color: #1e293b;
     background: #f9fafb;
@@ -270,9 +274,9 @@ body {
     background: #14b8a6;
     color: white;
     border: none;
-    padding: clamp(12px, 3vw, 18px) clamp(20px, 5vw, 30px);
+    padding: min(3vw, 18px) min(5vw, 30px);
     border-radius: 50px;
-    font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+    font-size: min(3.5vw, 1.1rem);
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -280,7 +284,7 @@ body {
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    margin-top: clamp(0.5rem, 2vw, 1rem);
+    margin-top: 2vw;
     box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3);
 }
 
@@ -296,8 +300,8 @@ body {
 
 .button-arrow {
     transition: transform 0.3s ease;
-    width: clamp(16px, 4vw, 20px);
-    height: clamp(16px, 4vw, 20px);
+    width: min(4vw, 20px);
+    height: min(4vw, 20px);
 }
 
 .submit-button:hover .button-arrow {
@@ -307,43 +311,43 @@ body {
 /* Success Message */
 .success-message {
     text-align: center;
-    padding: clamp(1.5rem, 4vw, 2rem);
+    padding: 4vw;
 }
 
 .success-icon {
     background: #10b981;
     color: white;
-    width: clamp(40px, 10vw, 60px);
-    height: clamp(40px, 10vw, 60px);
+    width: min(10vw, 60px);
+    height: min(10vw, 60px);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto clamp(0.5rem, 2vw, 1rem);
+    margin: 0 auto 2vw;
 }
 
 .success-message h3 {
     color: #1e293b;
-    font-size: clamp(1.2rem, 4vw, 1.5rem);
-    margin-bottom: 0.5rem;
+    font-size: min(4vw, 1.5rem);
+    margin-bottom: 1vw;
 }
 
 .success-message p {
     color: #64748b;
-    font-size: clamp(0.8rem, 3vw, 0.9rem);
-    margin-bottom: clamp(1rem, 3vw, 2rem);
+    font-size: min(3vw, 0.9rem);
+    margin-bottom: 3vw;
 }
 
 .back-button {
     background: #2563eb;
     color: white;
     border: none;
-    padding: clamp(10px, 2.5vw, 12px) clamp(16px, 4vw, 24px);
+    padding: min(2.5vw, 12px) min(4vw, 24px);
     border-radius: 8px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-size: clamp(0.8rem, 3vw, 0.9rem);
+    font-size: min(3vw, 0.9rem);
 }
 
 .back-button:hover {
@@ -354,7 +358,7 @@ body {
 .service-info {
     display: flex;
     flex-direction: column;
-    gap: clamp(0.8rem, 2vw, 1rem);
+    gap: 2vw;
     order: 1;
 }
 
@@ -366,8 +370,8 @@ body {
 
 .info-card {
     background: white;
-    padding: clamp(1rem, 3vw, 1.5rem);
-    border-radius: clamp(10px, 2.5vw, 15px);
+    padding: 3vw;
+    border-radius: min(2.5vw, 15px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     border: 1px solid #e2e8f0;
     animation: fadeInRight 0.6s ease forwards;
@@ -375,14 +379,14 @@ body {
 
 .info-card h3 {
     color: #1e293b;
-    font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+    font-size: min(3.5vw, 1.1rem);
     font-weight: 600;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1vw;
 }
 
 .info-card p {
     color: #64748b;
-    font-size: clamp(0.8rem, 3vw, 0.9rem);
+    font-size: min(3vw, 0.9rem);
     line-height: 1.5;
 }
 
@@ -391,12 +395,12 @@ body {
     background: #1e293b;
     color: white;
     text-align: center;
-    padding: clamp(1.5rem, 4vw, 2rem) 0;
-    margin-top: clamp(1rem, 3vw, 2rem);
+    padding: 4vw 0;
+    margin-top: 3vw;
 }
 
 .footer p {
-    font-size: clamp(0.8rem, 3vw, 0.9rem);
+    font-size: min(3vw, 0.9rem);
 }
 
 /* Loading State */
@@ -412,8 +416,8 @@ body {
 .submit-button.loading::after {
     content: '';
     position: absolute;
-    width: clamp(16px, 4vw, 20px);
-    height: clamp(16px, 4vw, 20px);
+    width: min(4vw, 20px);
+    height: min(4vw, 20px);
     border: 2px solid transparent;
     border-top: 2px solid currentColor;
     border-radius: 50%;
@@ -436,8 +440,8 @@ body {
 
 .error-message {
     color: #ef4444;
-    font-size: clamp(0.7rem, 2.5vw, 0.8rem);
-    margin-top: 0.25rem;
+    font-size: min(2.5vw, 0.8rem);
+    margin-top: 0.5vw;
 }
 
 /* Animation for form appearance */
@@ -474,89 +478,89 @@ body {
 /* Responsive Design for Smaller Screens */
 @media (max-width: 600px) {
     .booking-card {
-        padding: clamp(1rem, 3vw, 1.5rem);
+        padding: 3vw;
     }
 
     .booking-title {
-        font-size: clamp(1.2rem, 4.5vw, 1.5rem);
+        font-size: min(4.5vw, 1.5rem);
     }
 }
 
 @media (max-width: 480px) {
     .container {
-        padding: 0 clamp(8px, 3vw, 12px);
+        padding: 0 3vw;
     }
 
     .logo img {
-        width: clamp(40px, 12vw, 60px);
-        height: clamp(30px, 9vw, 45px);
+        width: min(12vw, 60px);
+        max-height: 45px;
     }
 
     .nav-link {
-        font-size: clamp(0.8rem, 3.2vw, 0.9rem);
+        font-size: min(3.2vw, 0.9rem);
     }
 
     .booking-card {
-        padding: clamp(0.8rem, 2.5vw, 1.2rem);
+        padding: 2.5vw;
     }
 
     .form-group input,
     .form-group select,
     .form-group textarea {
-        padding: clamp(8px, 2vw, 12px);
-        font-size: clamp(0.8rem, 3.2vw, 0.9rem);
+        padding: min(2vw, 12px);
+        font-size: min(3.2vw, 0.9rem);
     }
 
     .form-group input[type="file"]::-webkit-file-upload-button {
-        padding: clamp(6px, 1.5vw, 8px) clamp(10px, 3vw, 15px);
-        font-size: clamp(0.7rem, 2.5vw, 0.8rem);
+        padding: min(1.5vw, 8px) min(3vw, 15px);
+        font-size: min(2.5vw, 0.8rem);
     }
 
     .total-amount {
-        font-size: clamp(0.9rem, 3.5vw, 1rem);
+        font-size: min(3.5vw, 1rem);
     }
 
     .submit-button {
-        padding: clamp(10px, 2.5vw, 14px) clamp(15px, 4vw, 25px);
-        font-size: clamp(0.8rem, 3.2vw, 1rem);
+        padding: min(2.5vw, 14px) min(4vw, 25px);
+        font-size: min(3.2vw, 1rem);
     }
 
     .success-message h3 {
-        font-size: clamp(1rem, 3.5vw, 1.3rem);
+        font-size: min(3.5vw, 1.3rem);
     }
 
     .success-message p {
-        font-size: clamp(0.7rem, 2.5vw, 0.8rem);
+        font-size: min(2.5vw, 0.8rem);
     }
 
     .back-button {
-        padding: clamp(8px, 2vw, 10px) clamp(12px, 3vw, 20px);
-        font-size: clamp(0.7rem, 2.5vw, 0.8rem);
+        padding: min(2vw, 10px) min(3vw, 20px);
+        font-size: min(2.5vw, 0.8rem);
     }
 }
 
 @media (max-width: 360px) {
     .booking-title {
-        font-size: clamp(1rem, 4vw, 1.3rem);
+        font-size: min(4vw, 1.3rem);
     }
 
     .booking-subtitle {
-        font-size: clamp(0.8rem, 3vw, 0.9rem);
+        font-size: min(3vw, 0.9rem);
     }
 
     .form-label {
-        font-size: clamp(0.7rem, 2.5vw, 0.8rem);
+        font-size: min(2.5vw, 0.8rem);
     }
 
     .form-group input,
     .form-group select,
     .form-group textarea {
-        padding: clamp(6px, 1.8vw, 10px);
-        font-size: clamp(0.7rem, 2.8vw, 0.8rem);
+        padding: min(1.8vw, 10px);
+        font-size: min(2.8vw, 0.8rem);
     }
 
     .submit-button {
-        padding: clamp(8px, 2vw, 12px) clamp(12px, 3vw, 20px);
-        font-size: clamp(0.7rem, 2.8vw, 0.9rem);
+        padding: min(2vw, 12px) min(3vw, 20px);
+        font-size: min(2.8vw, 0.9rem);
     }
 }
