@@ -3,195 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Book a convenient laundry pickup with Joacia. Specify your service, quantity, and upload photos of your clothes.">
-    <meta name="keywords" content="laundry, pickup, booking, Joacia, Ibadan">
-    <title>Book a Pickup - Joacia</title>
-    <link rel="stylesheet" href="booking.css">
+    <title>LaundryPro - Place Your Order</title>
+    <link rel="stylesheet" href="order.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="shortcut icon" href="images/logo.jpg" type="image/x-icon">
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="container">
-            <div class="header-content">
-                <a href="index.html" class="logo">
-                    <img src="images/logo-removebg-preview.png" alt="Joacia Logo">
-                </a>
-                <nav class="nav">
-                    <a href="index.html" class="nav-link">← Back to Home</a>
-                </nav>
-            </div>
+    <header class="page-header">
+        <div class="header-content">
+            <h1 class="page-title">Place Your Laundry Order</h1>
+            <a href="index.html" class="btn btn-secondary">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5"/>
+                    <polyline points="12 19 5 12 12 5"/>
+                </svg>
+                Back to Home
+            </a>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="main">
-        <div class="container">
-            <div class="booking-wrapper">
-                <div class="booking-card">
-                    <!-- Header Section -->
-                    <div class="booking-header">
-                        <div class="header-left">
-                            <h1 class="booking-title">Book a convenient pick-up time</h1>
-                            <p class="booking-subtitle">Provide Pickup Details</p>
-                        </div>
-                        <div class="header-right">
-                            <div class="service-badge">
-                                <span class="badge-number">24</span>
-                            </div>
-                        </div>
+    <main class="main-content">
+        <div class="order-card">
+            <form id="customerOrderForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="customerName">Your Full Name</label>
+                        <input type="text" id="customerName" required>
                     </div>
-
-                    <!-- Booking Form -->
-                    <form class="booking-form" id="bookingForm">
-                        <!-- Personal Information Row -->
-                        <div class="form-row">
-                            <div class="form-group">
-                                <input type="text" id="fullName" name="fullName" placeholder="Full Name" required>
-                            </div>
-                            <div class="form-group">
-                                <input type="email" id="email" name="email" placeholder="Email" required>
-                            </div>
-                        </div>
-
-                        <!-- Contact Information Row -->
-                        <div class="form-row">
-                            <div class="form-group">
-                                <input type="tel" id="phone" name="phone" placeholder="Phone" required>
-                            </div>
-                            <div class="form-group">
-                                <input type="tel" id="whatsapp" name="whatsapp" placeholder="WhatsApp No.">
-                            </div>
-                        </div>
-
-                        <!-- Date and Time Row -->
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Pickup Date</label>
-                                <div class="date-input-wrapper">
-                                    <input type="date" id="pickupDate" name="pickupDate" required>
-                                    <div class="calendar-icon">
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                                            <line x1="16" y1="2" x2="16" y2="6"/>
-                                            <line x1="8" y1="2" x2="8" y2="6"/>
-                                            <line x1="3" y1="10" x2="21" y2="10"/>
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Pickup Time</label>
-                                <select id="pickupTime" name="pickupTime" required>
-                                    <option value="">Pickup Time</option>
-                                    <option value="08:00">8:00 AM</option>
-                                    <option value="09:00">9:00 AM</option>
-                                    <option value="10:00">10:00 AM</option>
-                                    <option value="11:00">11:00 AM</option>
-                                    <option value="12:00">12:00 PM</option>
-                                    <option value="13:00">1:00 PM</option>
-                                    <option value="14:00">2:00 PM</option>
-                                    <option value="15:00">3:00 PM</option>
-                                    <option value="16:00">4:00 PM</option>
-                                    <option value="17:00">5:00 PM</option>
-                                    <option value="18:00">6:00 PM</option>
-                                    <option value="19:00">7:00 PM</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Address Field -->
-                        <div class="form-group full-width">
-                            <input type="text" id="address" name="address" placeholder="Address" required>
-                        </div>
-
-                        <!-- Service Type and Quantity -->
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Service Type</label>
-                                <select id="serviceType" name="serviceType" required>
-                                    <option value="">Select Service</option>
-                                    <option value="dry-cleaning">Dry Cleaning</option>
-                                    <option value="wash-fold">Wash & Fold </option>
-                                    <option value="ironing">Ironing</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Quantity</label>
-                                <input type="number" id="quantity" name="quantity" placeholder="Enter number of clothes" min="0.5" step="0.5" required>
-                            </div>
-                        </div>
-
-                        <!-- Photo Upload -->
-                        <div class="form-group full-width">
-                            <label class="form-label">Upload Clothes Photo</label>
-                            <input type="file" id="clothesPhoto" name="clothesPhoto" accept="image/*" required>
-                            <div class="photo-preview" id="photoPreview" style="display: none;">
-                                <img id="previewImage" src="#" alt="Uploaded clothes preview">
-                            </div>
-                        </div>
-
-                        <!-- Total Amount -->
-                        <div class="form-group full-width">
-                            <label class="form-label">Total Amount</label>
-                            <div class="total-amount" id="totalAmount">N2.00</div>
-                        </div>
-
-                        <!-- Additional Note -->
-                        <!-- <div class="form-group full-width">
-                            <textarea id="additionalNote" name="additionalNote" placeholder="Additional Note" rows="4"></textarea>
-                        </div> -->
-
-                        <!-- Submit Button -->
-                        <button type="submit" class="submit-button">
-                            <span class="button-text">Request Pickup</span>
-                            <svg class="button-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                <line x1="5" y1="12" x2="19" y2="12"/>
-                                <polyline points="12,5 19,12 12,19"/>
-                            </svg>
-                        </button>
-                    </form>
-
-                    <!-- Success Message (Hidden by default) -->
-                    <div class="success-message" id="successMessage" style="display: none;">
-                        <div class="success-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                <polyline points="20,6 9,17 4,12"/>
-                            </svg>
-                        </div>
-                        <h3>Pickup Scheduled Successfully!</h3>
-                        <p>We'll contact you shortly to confirm your pickup details.</p>
-                        <button class="back-button" onclick="resetForm()">Schedule Another Pickup</button>
+                    <div class="form-group">
+                        <label for="customerEmail">Email Address</label>
+                        <input type="email" id="customerEmail" required>
                     </div>
                 </div>
+                
+                <div class="form-group">
+                    <label for="customerPhone">Phone Number (Optional)</label>
+                    <input type="tel" id="customerPhone">
+                </div>
 
-                <!-- Service Information -->
-                <div class="service-info">
-                    <div class="info-card">
-                        <h3>24-Hour Service</h3>
-                        <p>We provide convenient pickup and delivery within 24 hours for your laundry needs.</p>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="serviceType">Service Type</label>
+                        <select id="serviceType" required>
+                            <option value="">Select Service</option>
+                            <option value="wash-fold">Wash & Fold</option>
+                            <option value="dry-cleaning">Dry Cleaning</option>
+                            <option value="ironing">Ironing</option>
+                        </select>
                     </div>
-                    <div class="info-card">
-                        <h3>Easy Scheduling</h3>
-                        <p>Book your pickup time that works best for your schedule. We're flexible!</p>
-                    </div>
-                    <div class="info-card">
-                        <h3>Professional Care</h3>
-                        <p>Your clothes are handled with the utmost care by our experienced team.</p>
+                    <div class="form-group">
+                        <label for="quantity">Quantity (e.g., lbs for Wash & Fold, items for Dry Cleaning)</label>
+                        <input type="number" id="quantity" min="1" value="1" required>
                     </div>
                 </div>
-            </div>
+                
+                <div class="form-group">
+                    <label>Upload Images (Optional)</label>
+                    <div class="file-upload-area" id="fileUploadArea">
+                        <input type="file" id="orderImages" multiple accept="image/*" hidden>
+                        <div class="upload-placeholder">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="7,10 12,15 17,10"/>
+                                <line x1="12" y1="15" x2="12" y2="3"/>
+                            </svg>
+                            <p>Click to upload images or drag and drop</p>
+                            <span>PNG, JPG up to 10MB each</span>
+                        </div>
+                        <div class="uploaded-files" id="uploadedFiles"></div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="specialInstructions">Special Instructions (Optional)</label>
+                    <textarea id="specialInstructions" rows="4"></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Place Order</button>
+            </form>
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2024 Joacia. All rights reserved.</p>
-        </div>
-    </footer>
+    <div id="notificationContainer"></div>
 
-    <script src="booking.js"></script>
+    <script src="order.js"></script>
 </body>
 </html>
