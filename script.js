@@ -205,3 +205,5 @@ document.addEventListener('DOMContentLoaded', () => {
     const preferredContact = getUserPreference('contact_method', 'phone');
     console.log('User prefers contact via:', preferredContact);
 });
+
+

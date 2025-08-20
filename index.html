@@ -9,6 +9,19 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="images/logo.jpg" type="image/x-icon">
+    <!-- Add Appwrite SDK CDN -->
+<script src="https://cdn.jsdelivr.net/npm/appwrite@13.0.0"></script>
+    <script>
+        // Initialize Appwrite client
+        const client = new Appwrite.Client();
+        client
+            .setEndpoint('https://cloud.appwrite.io/v1') // Your Appwrite endpoint
+            .setProject('68a5ade7003695fd5dd2'); // Your Appwrite project ID
+
+        // Initialize services
+        const databases = new Appwrite.Databases(client);
+        const storage = new Appwrite.Storage(client);
+    </script>
 </head>
 <body>
     <!-- Header -->

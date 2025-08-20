@@ -1,3 +1,14 @@
+// Initialize Appwrite client
+const client = new Appwrite.Client();
+client
+    .setEndpoint('https://cloud.appwrite.io/v1') // Your Appwrite endpoint
+    .setProject('68a5ade7003695fd5dd2'); // Your Appwrite project ID
+
+// Initialize services
+const databases = new Appwrite.Databases(client);
+const storage = new Appwrite.Storage(client);
+let uploadedFiles = [];
+
 document.addEventListener("DOMContentLoaded", () => {
     setupOrderForm();
     setupFileUpload("fileUploadArea", "orderImages", "uploadedFiles", true);
@@ -8,7 +19,7 @@ function setupOrderForm() {
     orderForm.addEventListener("submit", handleOrderSubmission);
 }
 
-function handleOrderSubmission(event) {
+async function handleOrderSubmission(event) {
     event.preventDefault();
 
     const customerName = document.getElementById("customerName").value;
@@ -19,21 +30,34 @@ function handleOrderSubmission(event) {
     const specialInstructions = document.getElementById("specialInstructions").value;
 
     const uploadedFilesElements = document.querySelectorAll("#uploadedFiles .uploaded-file");
-    const attachments = Array.from(uploadedFilesElements).map(el => el.getAttribute("data-file-src"));
+
+
+    // Upload the first file if available
+    let fileId = null;
+    if (uploadedFiles.length > 0) {
+        fileId = await uploadImageToAppwrite(uploadedFiles[0]);
+        console.log("Uploaded file ID:", fileId);
+    }
+
+    // const attachments = Array.from(uploadedFilesElements).map(el => el.getAttribute("data-file-src"));
 
     const orderData = {
         id: Date.now(), // Simple unique ID
-        customerName: customerName,
-        customerEmail: customerEmail,
-        customerPhone: customerPhone,
-        serviceType: serviceType,
+        customers: customerName,
+        email: customerEmail,
+        phone: customerPhone,
+        items: serviceType,
         quantity: quantity,
         total: calculateOrderTotal(serviceType, quantity),
         instructions: specialInstructions,
         status: "pending", // Default status for new orders
         createdDate: new Date().toISOString(),
-        attachments: attachments
+        fileId: fileId ? [fileId] : []
     };
+
+    // uploadImageToAppwrite(uploadedFilesElements[0].getAttribute("data-file-src"))
+
+    console.log("Order Data:", orderData);
 
     // Retrieve existing orders from localStorage (same key as admin dashboard)
     let orders = JSON.parse(localStorage.getItem("joacia_orders") || "[]");
@@ -47,6 +71,34 @@ function handleOrderSubmission(event) {
     document.getElementById("customerOrderForm").reset();
     document.getElementById("uploadedFiles").innerHTML = ""; // Clear uploaded files display
 }
+
+
+
+async function uploadImageToAppwrite(file) {
+    // Assumes 'storage' is already initialized with: const storage = new Appwrite.Storage(client);
+    try {
+        // Create a unique ID for the file (or use 'unique()' if available)
+        const response = await storage.createFile(
+            '68a5ba56002f5fe885f5', // Replace with your Appwrite bucket ID
+            Appwrite.ID.unique(),
+            file
+        );
+        console.log("File uploaded successfully:", response);
+        // Returns the file ID
+        return response.$id;
+    } catch (error) {
+        showNotification("Upload failed: " + error.message, "error");
+        console.error("Error uploading file:", error);
+        return null;
+    }
+}
+
+
+
+
+
+
+
 
 // Reused utility functions from admin-script.js
 function calculateOrderTotal(serviceType, quantity) {
@@ -114,6 +166,7 @@ function setupFileUpload(areaId, inputId, filesContainerId, multiple) {
 function handleFileUpload(files, container, multiple) {
     if (!multiple) {
         container.innerHTML = "";
+        uploadedFiles = [];
     }
 
     files.forEach((file) => {
@@ -125,6 +178,7 @@ function handleFileUpload(files, container, multiple) {
                 container.appendChild(fileElement);
             };
             reader.readAsDataURL(file);
+            uploadedFiles.push(file); // Store the File object
         } else {
             showNotification(`File type not supported: ${file.name}`, "warning");
         }
