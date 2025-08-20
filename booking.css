@@ -40,7 +40,7 @@ body {
 }
 
 .logo img {
-    width: min(10vw, 70px);
+    width: clamp(120px, 25vw, 150px);
     height: auto;
     max-height: 50px;
 }
