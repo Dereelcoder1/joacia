@@ -219,81 +219,133 @@ function loadRecentActivity() {
 }
 
 // Bookings Management
-function loadBookingsData() {
-  const bookings = getBookingsFromStorage()
-  const tableBody = document.getElementById("bookingsTableBody")
+// Add this helper function for Appwrite bookings
+async function getBookingsFromAppwrite() {
+    const databaseId = '68a5af3c0024830bff08'; // Your database ID
+    const bookingsCollectionId = '68a5af8a0036e23e8910'; // Replace with your bookings collection ID
 
-  tableBody.innerHTML = bookings
-    .map(
-      (booking) => `
+    try {
+        const response = await databases.listDocuments(databaseId, bookingsCollectionId);
+        return response.documents;
+    } catch (error) {
+        showNotification("Failed to load bookings: " + error.message, "error");
+        return [];
+    }
+}
+
+// Update loadBookingsData to use Appwrite
+async function loadBookingsData() {
+    const bookings = await getBookingsFromAppwrite();
+    const tableBody = document.getElementById("bookingsTableBody");
+
+    tableBody.innerHTML = bookings
+        .map(
+            (booking) => `
       <tr>
-          <td>#${booking.id}</td>
-          <td>${booking.fullName}</td>
-          <td>${formatDate(booking.pickupDate)}</td>
-          <td>${booking.pickupTime}</td>
-          <td>${booking.address}</td>
+          <td>#${booking.$id}</td>
+          <td>${booking.fullName || booking.Customer || booking.customers || ""}</td>
+          <td>${formatDate(booking.pickupDate || booking.date || "")}</td>
+          <td>${booking.pickupTime || booking.time || ""}</td>
+          <td>${booking.address || ""}</td>
           <td><span class="status-badge ${booking.status || "pending"}">${booking.status || "pending"}</span></td>
           <td>
-              <button class="btn btn-secondary btn-sm" onclick="editBooking(${booking.id})">Edit</button>
-              <button class="btn btn-danger btn-sm" onclick="deleteBooking(${booking.id})">Delete</button>
+              <button class="btn btn-secondary btn-sm" onclick="editBooking('${booking.$id}')">Edit</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteBooking('${booking.$id}')">Delete</button>
           </td>
       </tr>
   `,
-    )
-    .join("")
+        )
+        .join("");
 }
 
 // Orders Management
-function loadOrdersData() {
-  const orders = getOrdersFromStorage()
-  const tableBody = document.getElementById("ordersTableBody")
+// Add this helper function for Appwrite orders
+async function getOrdersFromAppwrite() {
+    const databaseId = '68a5af3c0024830bff08'; // Your database ID
+    const ordersCollectionId = '68a5b25900162c67fe51'; // Your orders collection ID
 
-  tableBody.innerHTML = orders
-    .map(
-      (order) => `
+    try {
+        const response = await databases.listDocuments(databaseId, ordersCollectionId);
+        return response.documents;
+    } catch (error) {
+        showNotification("Failed to load orders: " + error.message, "error");
+        return [];
+    }
+}
+
+// Update loadOrdersData to use Appwrite
+async function loadOrdersData() {
+    const orders = await getOrdersFromAppwrite();
+    const tableBody = document.getElementById("ordersTableBody");
+
+    tableBody.innerHTML = orders
+        .map(
+            (order) => `
       <tr>
-          <td>#${order.id}</td>
-          <td>${order.customerName}</td>
+          <td>#${order.$id}</td>
+          <td>${order.customerName || order.customers || ""}</td>
           <td>
-              ${order.serviceType}
+              ${order.serviceType || order.items || ""}
               ${order.attachments && order.attachments.length > 0 ? `<img src="${order.attachments[0]}" alt="Order item" class="order-item-thumbnail" />` : ""}
           </td>
-          <td>${order.quantity}</td>
-          <td>₦${order.total ? order.total.toFixed(2) : "0.00"}</td>
+          <td>${order.quantity || ""}</td>
+          <td>₦${order.total ? Number(order.total).toFixed(2) : "0.00"}</td>
           <td><span class="status-badge ${order.status}">${order.status}</span></td>
           <td>
-              <button class="btn btn-secondary btn-sm" onclick="editOrder(${order.id})">Edit</button>
-              <button class="btn btn-danger btn-sm" onclick="deleteOrder(${order.id})">Delete</button>
+              <button class="btn btn-secondary btn-sm" onclick="editOrder('${order.$id}')">Edit</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteOrder('${order.$id}')">Delete</button>
           </td>
       </tr>
   `,
-    )
-    .join("")
+        )
+        .join("");
 }
 
 // Customers Management
-function loadCustomersData() {
-  const customers = getCustomersFromStorage()
-  const tableBody = document.getElementById("customersTableBody")
+// Add your Appwrite client initialization at the top if not already present
+const client = new Appwrite.Client();
+client
+    .setEndpoint('https://cloud.appwrite.io/v1')
+    .setProject('68a5ade7003695fd5dd2');
+const databases = new Appwrite.Databases(client);
 
-  tableBody.innerHTML = customers
-    .map(
-      (customer) => `
+// Replace getCustomersFromStorage with Appwrite API
+async function getCustomersFromAppwrite() {
+    const databaseId = '68a5af3c0024830bff08'; // Your database ID
+    const customersCollectionId = '68a5b34c0009d8b43e5f'; // Your customers collection ID
+
+    try {
+        const response = await databases.listDocuments(databaseId, customersCollectionId);
+        return response.documents;
+    } catch (error) {
+        showNotification("Failed to load customers: " + error.message, "error");
+        return [];
+    }
+}
+
+// Update loadCustomersData to use the new function
+async function loadCustomersData() {
+    const customers = await getCustomersFromAppwrite();
+    const tableBody = document.getElementById("customersTableBody");
+
+    tableBody.innerHTML = customers
+        .map(
+            (customer) => `
       <tr>
-          <td>#${customer.id}</td>
+          <td>#${customer.$id}</td>
           <td>${customer.name}</td>
           <td>${customer.email}</td>
           <td>${customer.phone || "N/A"}</td>
           <td>${customer.totalOrders || 0}</td>
           <td>${customer.lastOrder ? formatDate(customer.lastOrder) : "Never"}</td>
           <td>
-              <button class="btn btn-secondary btn-sm" onclick="editCustomer(${customer.id})">Edit</button>
-              <button class="btn btn-danger btn-sm" onclick="deleteCustomer(${customer.id})">Delete</button>
+              <button class="btn btn-secondary btn-sm" onclick="editCustomer('${customer.$id}')">Edit</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteCustomer('${customer.$id}')">Delete</button>
           </td>
       </tr>
   `,
-    )
-    .join("")
+        )
+        .join("");
 }
 
 // Inventory Management

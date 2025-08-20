@@ -28,6 +28,7 @@ async function handleOrderSubmission(event) {
     const serviceType = document.getElementById("serviceType").value;
     const quantity = parseInt(document.getElementById("quantity").value);
     const specialInstructions = document.getElementById("specialInstructions").value;
+    const address = document.getElementById("address").value;
 
     const uploadedFilesElements = document.querySelectorAll("#uploadedFiles .uploaded-file");
 
@@ -42,7 +43,7 @@ async function handleOrderSubmission(event) {
     // const attachments = Array.from(uploadedFilesElements).map(el => el.getAttribute("data-file-src"));
 
     const orderData = {
-        id: Date.now(), // Simple unique ID
+        // id: Date.now(), // Simple unique ID
         customers: customerName,
         email: customerEmail,
         phone: customerPhone,
@@ -51,29 +52,35 @@ async function handleOrderSubmission(event) {
         total: calculateOrderTotal(serviceType, quantity),
         instructions: specialInstructions,
         status: "pending", // Default status for new orders
-        createdDate: new Date().toISOString(),
-        fileId: fileId ? [fileId] : []
+        createdDate: new Date().toISOString().toString(),
+        fileId: fileId ? fileId : "",
+        address: address,
     };
 
     // uploadImageToAppwrite(uploadedFilesElements[0].getAttribute("data-file-src"))
 
     console.log("Order Data:", orderData);
 
+    if (orderData) {
+        const response = await writeOrderToDatabase(orderData);
+        console.log("Database Response:", response);
+    }
+
     // Retrieve existing orders from localStorage (same key as admin dashboard)
-    let orders = JSON.parse(localStorage.getItem("joacia_orders") || "[]");
-    orders.push(orderData);
-    localStorage.setItem("joacia_orders", JSON.stringify(orders));
+    // let orders = JSON.parse(localStorage.getItem("joacia_orders") || "[]");
+    // orders.push(orderData);
+    // localStorage.setItem("joacia_orders", JSON.stringify(orders));
 
-    // Update customer data (similar to admin dashboard logic)
-    updateCustomerData(customerName, customerEmail, customerPhone);
+    // // Update customer data (similar to admin dashboard logic)
+    // updateCustomerData(customerName, customerEmail, customerPhone);
 
-    showNotification("Your order has been placed successfully!", "success");
-    document.getElementById("customerOrderForm").reset();
-    document.getElementById("uploadedFiles").innerHTML = ""; // Clear uploaded files display
+    // showNotification("Your order has been placed successfully!", "success");
+    // document.getElementById("customerOrderForm").reset();
+    // document.getElementById("uploadedFiles").innerHTML = ""; // Clear uploaded files display
 }
 
 
-
+//To Upload Image to Appwrite
 async function uploadImageToAppwrite(file) {
     // Assumes 'storage' is already initialized with: const storage = new Appwrite.Storage(client);
     try {
@@ -91,6 +98,78 @@ async function uploadImageToAppwrite(file) {
         console.error("Error uploading file:", error);
         return null;
     }
+}
+
+// order.js - Handles customer order submissions and file uploads
+async function writeOrderToDatabase(orderData) {
+    try {
+        const databaseId = '68a5af3c0024830bff08';
+        const ordersCollectionId = '68a5b25900162c67fe51';
+        const customersCollectionId = '68a5b34c0009d8b43e5f';
+
+        // Check if customer exists by email
+        const customers = await databases.listDocuments(databaseId, customersCollectionId, [
+            Appwrite.Query.equal('email', orderData.email)
+        ]);
+
+        let totalOrders = 1;
+        let customerId = null;
+
+        if (customers.total > 0) {
+            // Customer exists, update totalOrders and lastOrder
+            const customer = customers.documents[0];
+            customerId = customer.$id;
+            totalOrders = (customer.totalOrders || 0) + 1;
+            await databases.updateDocument(databaseId, customersCollectionId, customerId, {
+                totalOrders: totalOrders,
+                lastOrder: orderData.createdDate
+            });
+        } else {
+            // Customer does not exist, create new customer
+            const newCustomer = await databases.createDocument(databaseId, customersCollectionId, Appwrite.ID.unique(), {
+                name: orderData.customers,
+                email: orderData.email,
+                phone: orderData.phone,
+                totalOrders: totalOrders,
+                lastOrder: orderData.createdDate,
+                // createdDate: orderData.createdDate
+            });
+            customerId = newCustomer.$id;
+        }
+
+        // Save order data in orders collection
+        // orderData.totalOrders = totalOrders;
+        // orderData.customerId = customerId;
+        const response = await databases.createDocument(
+            databaseId,
+            ordersCollectionId,
+            Appwrite.ID.unique(),
+            orderData
+        );
+        console.log("Order written to database:", response);
+        // showNotification("Order saved to database!", "success");
+        showNotification(
+            `Order saved to database!<br>Your Order ID: <b id="orderIdText">${response.$id}</b> <button onclick="copyOrderId('${response.$id}')">Copy</button>`,
+            "success"
+        );
+        document.getElementById("customerOrderForm").reset();
+        document.getElementById("uploadedFiles").innerHTML = "";
+        return response;
+    } catch (error) {
+        console.error("Error writing order to database:", error);
+        showNotification("Failed to save order to database: " + error.message, "error");
+        return null;
+    }
+}
+
+function copyOrderId(orderId) {
+    navigator.clipboard.writeText(orderId)
+        .then(() => {
+            showNotification("Order ID copied!", "info");
+        })
+        .catch(() => {
+            showNotification("Failed to copy Order ID.", "error");
+        });
 }
 
 
@@ -231,7 +310,13 @@ function showNotification(message, type = "info") {
     };
 
     notification.style.background = colors[type] || colors.info;
-    notification.textContent = message;
+
+    // Render HTML for success, else plain text
+    if (type === "success") {
+        notification.innerHTML = message;
+    } else {
+        notification.textContent = message;
+    }
 
     document.body.appendChild(notification);
 
@@ -240,11 +325,16 @@ function showNotification(message, type = "info") {
         notification.style.transform = "translateX(0)";
     }, 100);
 
-    setTimeout(() => {
-        notification.style.opacity = "0";
-        notification.style.transform = "translateX(100%)";
+    // Only auto-dismiss if not success
+    if (type !== "success") {
         setTimeout(() => {
-            document.body.removeChild(notification);
-        }, 300);
-    }, 3000);
+            notification.style.opacity = "0";
+            notification.style.transform = "translateX(100%)";
+            setTimeout(() => {
+                if (document.body.contains(notification)) {
+                    document.body.removeChild(notification);
+                }
+            }, 300);
+        }, 3000);
+    }
 }
