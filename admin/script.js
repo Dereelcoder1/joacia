@@ -364,7 +364,9 @@ async function getOrdersFromAppwrite() {
     }
 }
 
-// Update loadOrdersData to use Appwrite
+// ...existing code...
+
+// Update loadOrdersData to show a styled dropdown for status
 async function loadOrdersData() {
     const orders = await getOrdersFromAppwrite();
     const tableBody = document.getElementById("ordersTableBody");
@@ -381,13 +383,50 @@ async function loadOrdersData() {
           </td>
           <td>${order.quantity || ""}</td>
           <td>₦${order.total ? Number(order.total).toFixed(2) : "0.00"}</td>
-          <td><span class="status-badge ${order.status}">${order.status}</span></td>
-   
+          <td id="order-status-cell-${order.$id}">
+              <select class="form-select form-select-sm stylish-status-dropdown order-status-dropdown" data-order-id="${order.$id}">
+                  <option value="pending" ${order.status === "pending" ? "selected" : ""}>Pending</option>
+                  <option value="completed" ${order.status === "completed" ? "selected" : ""}>Completed</option>
+              </select>
+          </td>
       </tr>
   `,
         )
         .join("");
+
+    // Add event listeners for all status dropdowns
+    document.querySelectorAll(".order-status-dropdown").forEach((dropdown) => {
+        // Style the dropdown (same as bookings)
+        dropdown.style.padding = "4px 10px";
+        dropdown.style.borderRadius = "6px";
+        dropdown.style.border = "1px solid #d1d5db";
+        dropdown.style.background = "#f9fafb";
+        dropdown.style.fontWeight = "500";
+        dropdown.style.color = "#2563eb";
+        dropdown.style.outline = "none";
+        dropdown.style.marginRight = "8px";
+        dropdown.style.minWidth = "110px";
+        dropdown.style.cursor = "pointer";
+
+        dropdown.addEventListener("change", async function () {
+            const orderId = this.getAttribute("data-order-id");
+            const newStatus = this.value;
+            try {
+                await databases.updateDocument(
+                    '68a5af3c0024830bff08', // databaseId
+                    '68a5b25900162c67fe51', // ordersCollectionId
+                    orderId,
+                    { status: newStatus }
+                );
+                showNotification("Order status updated!", "success");
+                loadOrdersData();
+            } catch (error) {
+                showNotification("Failed to update order status: " + error.message, "error");
+            }
+        });
+    });
 }
+// ...existing code...
 
 // Customers Management
 // Add your Appwrite client initialization at the top if not already present
