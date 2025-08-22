@@ -8,6 +8,35 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/appwrite@13.0.0"></script>
 </head>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const orderForm = document.getElementById("customerOrderForm");
+    if (orderForm) {
+        orderForm.addEventListener("submit", function (e) {
+            const submitBtn = orderForm.querySelector(".btn.btn-primary");
+            // Prevent double submission
+            if (submitBtn.classList.contains("loading")) return;
+            submitBtn.classList.add("loading");
+            submitBtn.disabled = true;
+
+            // Add spinner if not already present
+            if (!submitBtn.querySelector(".spinner")) {
+                const spinner = document.createElement("span");
+                spinner.className = "spinner";
+                submitBtn.appendChild(spinner);
+            }
+
+            // Simulate loading (replace with your actual async logic)
+            setTimeout(() => {
+                submitBtn.classList.remove("loading");
+                submitBtn.disabled = false;
+                const spinner = submitBtn.querySelector(".spinner");
+                if (spinner) spinner.remove();
+            }, 2000);
+        });
+    }
+});
+</script>
 <body>
     <header class="page-header">
         <div class="header-content">

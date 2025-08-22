@@ -14,6 +14,37 @@
     <script src="https://cdn.jsdelivr.net/npm/appwrite@13.0.0"></script>
 </head>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const bookingForm = document.getElementById("bookingForm");
+    if (bookingForm) {
+        bookingForm.addEventListener("submit", function (e) {
+            const submitBtn = bookingForm.querySelector(".submit-button");
+            // Prevent double submission
+            if (submitBtn.classList.contains("loading")) return;
+            submitBtn.classList.add("loading");
+            submitBtn.disabled = true;
+
+            // Add spinner if not already present
+            if (!submitBtn.querySelector(".spinner")) {
+                const spinner = document.createElement("span");
+                spinner.className = "spinner";
+                submitBtn.appendChild(spinner);
+            }
+
+            // Simulate loading (replace this with your actual async logic)
+            // Remove this setTimeout in production and handle loading state based on your API response
+            setTimeout(() => {
+                submitBtn.classList.remove("loading");
+                submitBtn.disabled = false;
+                const spinner = submitBtn.querySelector(".spinner");
+                if (spinner) spinner.remove();
+            }, 2000);
+        });
+    }
+});
+</script>
+
 <body>
     <!-- Header -->
     <header class="header">

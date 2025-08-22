@@ -1055,3 +1055,11 @@ body {
     transform: translateY(0);
   }
 }
+/* Add to your CSS file or <style> block */
+.stylish-status-dropdown:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px #2563eb22;
+}
+.stylish-save-btn:active {
+  background: #16a34a !important;
+}

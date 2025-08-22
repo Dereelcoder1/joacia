@@ -233,6 +233,8 @@ async function getBookingsFromAppwrite() {
     }
 }
 
+// ...existing code...
+
 // Update loadBookingsData to use Appwrite
 async function loadBookingsData() {
     const bookings = await getBookingsFromAppwrite();
@@ -247,10 +249,11 @@ async function loadBookingsData() {
           <td>${formatDate(booking.pickupDate || booking.date || "")}</td>
           <td>${booking.pickupTime || booking.time || ""}</td>
           <td>${booking.address || ""}</td>
-          <td><span class="status-badge ${booking.status || "pending"}">${booking.status || "pending"}</span></td>
+          <td id="status-cell-${booking.$id}">
+              <span class="status-badge ${booking.status || "pending"}">${booking.status || "pending"}</span>
+          </td>
           <td>
               <button class="btn btn-secondary btn-sm" onclick="editBooking('${booking.$id}')">Edit</button>
-              <button class="btn btn-danger btn-sm" onclick="deleteBooking('${booking.$id}')">Delete</button>
           </td>
       </tr>
   `,
@@ -258,6 +261,94 @@ async function loadBookingsData() {
         .join("");
 }
 
+// ...existing code...
+
+function editBooking(id) {
+  // Find the row and status cell
+  const statusCell = document.getElementById(`status-cell-${id}`);
+  if (!statusCell) return;
+
+  // Get current status
+  const currentStatus = statusCell.textContent.trim().toLowerCase();
+
+  // Create dropdown
+  const select = document.createElement("select");
+  select.className = "form-select form-select-sm stylish-status-dropdown";
+  ["pending", "accepted", "completed"].forEach((status) => {
+    const option = document.createElement("option");
+    option.value = status;
+    option.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+    if (status === currentStatus) option.selected = true;
+    select.appendChild(option);
+  });
+
+  // Style the dropdown (add your own styles as needed)
+  select.style.padding = "4px 10px";
+  select.style.borderRadius = "6px";
+  select.style.border = "1px solid #d1d5db";
+  select.style.background = "#f9fafb";
+  select.style.fontWeight = "500";
+  select.style.color = "#2563eb";
+  select.style.outline = "none";
+  select.style.marginRight = "8px";
+  select.style.minWidth = "110px";
+  select.style.cursor = "pointer";
+
+  // Replace status cell content with dropdown and Save button
+  statusCell.innerHTML = "";
+  statusCell.appendChild(select);
+
+  // Create Save button (hidden by default)
+  const saveBtn = document.createElement("button");
+  saveBtn.textContent = "Save";
+  saveBtn.className = "btn btn-success btn-sm stylish-save-btn";
+  saveBtn.style.background = "#10b981";
+  saveBtn.style.color = "#fff";
+  saveBtn.style.border = "none";
+  saveBtn.style.borderRadius = "6px";
+  saveBtn.style.padding = "4px 14px";
+  saveBtn.style.fontWeight = "600";
+  saveBtn.style.marginLeft = "4px";
+  saveBtn.style.display = "none";
+  saveBtn.style.transition = "background 0.2s";
+  saveBtn.style.boxShadow = "0 2px 8px rgba(16,185,129,0.08)";
+  saveBtn.style.cursor = "pointer";
+
+  statusCell.appendChild(saveBtn);
+
+  let changed = false;
+
+  select.addEventListener("change", function () {
+    saveBtn.style.display = "inline-block";
+    changed = true;
+  });
+
+  saveBtn.addEventListener("click", async function () {
+    if (!changed) return;
+    saveBtn.disabled = true;
+    saveBtn.textContent = "Saving...";
+    try {
+      await databases.updateDocument(
+        '68a5af3c0024830bff08', // databaseId
+        '68a5af8a0036e23e8910', // bookingsCollectionId
+        id,
+        { status: select.value }
+      );
+      saveBtn.textContent = "Saved!";
+      saveBtn.style.background = "#22c55e";
+      setTimeout(() => {
+        loadBookingsData();
+      }, 800);
+      showNotification("Booking status updated!", "success");
+    } catch (error) {
+      saveBtn.disabled = false;
+      saveBtn.textContent = "Save";
+      showNotification("Failed to update status: " + error.message, "error");
+    }
+  });
+}
+
+// ...existing code...
 // Orders Management
 // Add this helper function for Appwrite orders
 async function getOrdersFromAppwrite() {
@@ -291,10 +382,7 @@ async function loadOrdersData() {
           <td>${order.quantity || ""}</td>
           <td>₦${order.total ? Number(order.total).toFixed(2) : "0.00"}</td>
           <td><span class="status-badge ${order.status}">${order.status}</span></td>
-          <td>
-              <button class="btn btn-secondary btn-sm" onclick="editOrder('${order.$id}')">Edit</button>
-              <button class="btn btn-danger btn-sm" onclick="deleteOrder('${order.$id}')">Delete</button>
-          </td>
+   
       </tr>
   `,
         )
@@ -338,10 +426,7 @@ async function loadCustomersData() {
           <td>${customer.phone || "N/A"}</td>
           <td>${customer.totalOrders || 0}</td>
           <td>${customer.lastOrder ? formatDate(customer.lastOrder) : "Never"}</td>
-          <td>
-              <button class="btn btn-secondary btn-sm" onclick="editCustomer('${customer.$id}')">Edit</button>
-              <button class="btn btn-danger btn-sm" onclick="deleteCustomer('${customer.$id}')">Delete</button>
-          </td>
+          <td></td>
       </tr>
   `,
         )
@@ -961,7 +1046,77 @@ function editOrder(id) {
     openOrderModal(order)
   }
 }
+// ...existing code...
+// Update loadBookingsData to use Appwrite
+async function loadBookingsData() {
+    const bookings = await getBookingsFromAppwrite();
+    const tableBody = document.getElementById("bookingsTableBody");
 
+    tableBody.innerHTML = bookings
+        .map(
+            (booking) => `
+      <tr>
+          <td>#${booking.$id}</td>
+          <td>${booking.fullName || booking.Customer || booking.customers || ""}</td>
+          <td>${formatDate(booking.pickupDate || booking.date || "")}</td>
+          <td>${booking.pickupTime || booking.time || ""}</td>
+          <td>${booking.address || ""}</td>
+          <td id="status-cell-${booking.$id}">
+              <span class="status-badge ${booking.status || "pending"}">${booking.status || "pending"}</span>
+          </td>
+          <td>
+              <button class="btn btn-secondary btn-sm" onclick="editBooking('${booking.$id}')">Edit</button>
+          </td>
+      </tr>
+  `,
+        )
+        .join("");
+}
+// ...existing code...
+
+// Edit Functions
+function editBooking(id) {
+  // Find the row and status cell
+  const statusCell = document.getElementById(`status-cell-${id}`);
+  if (!statusCell) return;
+
+  // Get current status
+  const currentStatus = statusCell.textContent.trim().toLowerCase();
+
+  // Create dropdown
+  const select = document.createElement("select");
+  select.className = "form-select form-select-sm";
+  ["pending", "accepted", "completed"].forEach((status) => {
+    const option = document.createElement("option");
+    option.value = status;
+    option.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+    if (status === currentStatus) option.selected = true;
+    select.appendChild(option);
+  });
+
+  // Replace status cell content with dropdown
+  statusCell.innerHTML = "";
+  statusCell.appendChild(select);
+
+  // Save on change
+  select.addEventListener("change", async function () {
+    // Update status in Appwrite (or localStorage if needed)
+    try {
+      // Update in Appwrite
+      await databases.updateDocument(
+        '68a5af3c0024830bff08', // databaseId
+        '68a5af8a0036e23e8910', // bookingsCollectionId
+        id,
+        { status: this.value }
+      );
+      showNotification("Booking status updated!", "success");
+      loadBookingsData();
+    } catch (error) {
+      showNotification("Failed to update status: " + error.message, "error");
+    }
+  });
+}
+// ...existing code...
 function editCustomer(id) {
   const customers = getCustomersFromStorage()
   const customer = customers.find((c) => c.id == id)
